@@ -17,7 +17,7 @@ cat9k_iosxe.16.06.02s.SPA.bin                16.6.2s        596391064 bytes   CA
 
 ```
 ## Distribute.py
-takes a tag and an imagename.
+takes a tag and an imagename.  If an image is not supplied, the "golden image" for the device will be used.
 Any devices with the tag associated with them will have the image distributed to them.  At present there is no
 checking in the script, so you need to be careful (or extend the script) 
 
