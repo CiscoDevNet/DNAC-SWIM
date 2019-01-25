@@ -1,0 +1,4 @@
+tests/*
+*.pyc
+*.retry
+.idea/
