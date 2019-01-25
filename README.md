@@ -2,7 +2,7 @@
 SWIM (SoftWare Image Management) API allow for the distribution and activation of software 
 images on Cisco network devices.
 
-This service is hosted on DNA Center.  Images are stored locally on DNAC and https is used to distribute them.
+This service is hosted on Cisco DNA Center.  Images are stored locally on Cisco DNA Center and https is used to distribute them.
 Images are distributed to devices by either HTTPS or SFTP.
 
 ## list_images.py
