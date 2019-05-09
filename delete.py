@@ -23,8 +23,13 @@ if __name__ ==  "__main__":
                         help="devices that match this tag")
     parser.add_argument('--image', type=str, required=False,
                         help="devices that match this tag")
-
+    parser.add_argument('-v', action='store_true',
+                        help="verbose")
     args = parser.parse_args()
+
+    if args.v:
+        logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+
 
     deviceIds = tagmapping(args.tag)
     delete_file(args.image, *deviceIds)

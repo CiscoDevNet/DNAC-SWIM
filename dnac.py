@@ -63,6 +63,7 @@ def wait_on_task(task_id, token, timeout=(5*RETRY_INTERVAL), retry_interval=RETR
         result.raise_for_status()
 
         response = result.json()["response"]
+        logging.debug(json.dumps(response,indent=2))
         #print json.dumps(response)
         if "endTime" in response:
             return response

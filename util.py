@@ -34,6 +34,15 @@ def tagmapping(tagname):
     response = get_url('dna/intent/api/v1/tag/{}/member?memberType=networkdevice'.format(tag_id))
     return [association['instanceUuid'] for association in response['response']]
 
+def device2id(device):
+        response = get_url('dna/intent/api/v1/network-device?managementIpAddress={0}'.format(device))
+        return (response['response'][0]['id'])
+
+def ipmapping(iplist):
+    ips = iplist.split(',')
+    deviceIds = map (device2id, ips)
+    return list(deviceIds)
+
 def post_and_wait(url, data):
 
     token = get_auth_token()
@@ -84,6 +93,6 @@ def delete_and_wait(url):
 
     taskid = response.json()['response']['taskId']
     print ("Waiting for Task %s" % taskid)
-    task_result = wait_on_task(taskid, token)
+    task_result = wait_on_task(taskid, token, timeout=60, retry_interval=3)
 
     return task_result

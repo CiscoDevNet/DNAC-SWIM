@@ -5,7 +5,7 @@ import json
 import logging
 from argparse import ArgumentParser
 
-from util import get_url, post_and_wait, tagmapping, ipmapping
+from util import get_url, post_and_wait, tagmapping
 
 def imageName2id(imageName):
     # if no image then return, will just use golden
@@ -16,14 +16,24 @@ def imageName2id(imageName):
     response = get_url(url)
     return response['response'][0]['imageUuid']
 
-def distribute(imageUuid, *deviceIdList):
+def activate(imageUuid, *deviceIdList):
 
     body = []
     for deviceId in deviceIdList:
-        body.append({"deviceUuid": deviceId, "imageUuid": imageUuid})
+        body.append({
+        "activateLowerImageVersion": True,
+        "deviceUpgradeMode": "currentlyExists",
+        "deviceUuid": deviceId,
+        "distributeIfNeeded": False,
+        "imageUuidList": [
+            imageUuid
+        ],
+        "smuImageUuidList": [
 
+        ]
+    })
 
-    url = 'image/distribution'
+    url = 'image/activation/device'
     print(body)
     response = post_and_wait(url, body)
 
@@ -54,24 +64,17 @@ if __name__ ==  "__main__":
                         help="devices that match this tag")
     parser.add_argument('--image', type=str, required=False,
                         help="devices that match this tag")
-    parser.add_argument('--ips', type=str, required=False,
-                        help="list of ip comma separated")
     parser.add_argument('-v', action='store_true',
                         help="verbose")
     args = parser.parse_args()
-    deviceIds = []
     if args.v:
         logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-    if args.ips:
-        deviceIds = ipmapping(args.ips)
-    if args.tag:
-        deviceIds = tagmapping(args.tag)
+
+    deviceIds = tagmapping(args.tag)
     if deviceIds == []:
         raise ValueError("No devices found for tag {}".format(args.tag))
-
     imageId = imageName2id(args.image)
     validate(imageId, *deviceIds)
-
-    distribute(imageId, *deviceIds)
+    activate(imageId, *deviceIds)
 
