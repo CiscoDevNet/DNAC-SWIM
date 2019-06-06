@@ -5,7 +5,7 @@ import json
 import logging
 from argparse import ArgumentParser
 
-from util import get_url, post_and_wait, tagmapping, ipmapping
+from util import get_url, post_and_wait, find_ids
 
 def imageName2id(imageName):
     # if no image then return, will just use golden
@@ -59,19 +59,16 @@ if __name__ ==  "__main__":
     parser.add_argument('-v', action='store_true',
                         help="verbose")
     args = parser.parse_args()
-    deviceIds = []
     if args.v:
         logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-    if args.ips:
-        deviceIds = ipmapping(args.ips)
-    if args.tag:
-        deviceIds = tagmapping(args.tag)
+    # looks for tags and ips.  ips are comma sepperated
+    deviceIds = find_ids(args.tag, args.ips)
     if deviceIds == []:
         raise ValueError("No devices found for tag {}".format(args.tag))
 
     imageId = imageName2id(args.image)
-    validate(imageId, *deviceIds)
 
+    validate(imageId, *deviceIds)
     distribute(imageId, *deviceIds)
 

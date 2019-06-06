@@ -43,6 +43,19 @@ def ipmapping(iplist):
     deviceIds = map (device2id, ips)
     return list(deviceIds)
 
+def find_ids(tagname, ipList):
+    if tagname:
+        tagids = tagmapping(tagname)
+    else:
+        tagids = []
+    if ipList:
+        ipids = ipmapping(ipList)
+    else:
+        ipids = []
+    ipids.extend(tagids)
+    # make them unique
+    return list(set(ipids))
+
 def post_and_wait(url, data):
 
     token = get_auth_token()

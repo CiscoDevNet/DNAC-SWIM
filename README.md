@@ -5,6 +5,10 @@ images on Cisco network devices.
 This service is hosted on Cisco DNA Center.  Images are stored locally on Cisco DNA Center and https is used to distribute them.
 Images are distributed to devices by either HTTPS or SFTP.
 
+## using IP address too
+As of May 2019, in addition to a tagm you can also provide a list of IPs sepperated by ','.  make sure to remove spaces, otherwise the shell will get upset.
+If you provide both a tag and a list of ips, only unique will be used.
+
 ## list_images.py
 provides a list of all of the images on DNAC
 
@@ -20,6 +24,7 @@ cat9k_iosxe.16.06.02s.SPA.bin                16.6.2s        596391064 bytes   CA
 takes a tag and an imagename.  If an image is not supplied, the "golden image" for the device will be used.
 Any devices with the tag associated with them will have the image distributed to them.  At present there is no
 checking in the script, so you need to be careful (or extend the script) 
+
 
 ```buildoutcfg
  ./distribute.py --tag upgrade9k --image cat9k_iosxe.16.06.02s.SPA.bin
@@ -73,5 +78,6 @@ Waiting for Task 3a455f95-1a87-4ae7-b5a8-c8cd0949fdf8
 
 ```
 
-## Notes:
-I have not created an activate script, but that is almost identical to distribution
+## activate.py
+This works in the same way as distribution.  Activates an image once distributed.  Can take tag or a list of IP or both.
+
