@@ -3,7 +3,7 @@ from __future__ import print_function
 import sys
 import json
 import logging
-from argparse import ArgumentParser
+from argparse import ArgumentParser, REMAINDER
 
 from util import get_url, post_and_wait, find_ids
 
@@ -54,16 +54,15 @@ if __name__ ==  "__main__":
                         help="devices that match this tag")
     parser.add_argument('--image', type=str, required=False,
                         help="devices that match this tag")
-    parser.add_argument('--ips', type=str, required=False,
-                        help="list of ip comma separated")
     parser.add_argument('-v', action='store_true',
                         help="verbose")
+    parser.add_argument('rest', nargs=REMAINDER)
     args = parser.parse_args()
     if args.v:
         logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-    # looks for tags and ips.  ips are comma sepperated
-    deviceIds = find_ids(args.tag, args.ips)
+    # looks for tags and ips.  ips are at the end of the argumnennt list
+    deviceIds = find_ids(args.tag, args.rest)
     if deviceIds == []:
         raise ValueError("No devices found for tag {}".format(args.tag))
 

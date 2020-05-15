@@ -80,4 +80,8 @@ Waiting for Task 3a455f95-1a87-4ae7-b5a8-c8cd0949fdf8
 
 ## activate.py
 This works in the same way as distribution.  Activates an image once distributed.  Can take tag or a list of IP or both.
+As with distritution, you can leave image blank and the golden image will be used.
+
+However, if you are distributing a non-golden image, you will need to specify the same golden image to activate.
+If you are activating the golden image, then no need to specify an image.
 

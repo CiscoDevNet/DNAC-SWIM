@@ -39,8 +39,7 @@ def device2id(device):
         return (response['response'][0]['id'])
 
 def ipmapping(iplist):
-    ips = iplist.split(',')
-    deviceIds = map (device2id, ips)
+    deviceIds = map (device2id, iplist)
     return list(deviceIds)
 
 def find_ids(tagname, ipList):
@@ -71,7 +70,7 @@ def post_and_wait(url, data):
 
     taskid = response.json()['response']['taskId']
     print ("Waiting for Task %s" % taskid)
-    task_result = wait_on_task(taskid, token, timeout=900, retry_interval=60)
+    task_result = wait_on_task(taskid, token, timeout=3600, retry_interval=60)
 
     return task_result
 
